@@ -77,63 +77,71 @@ export const YA = ({ iref, animatedStyle }) => {
     />
   );
 };
-export const YZelements = ({toggleB = false, audio}) => {
+export const YZelementsAudio = ({toggleB = false, audio}) => {
   const [lengthY, setLengthY] = useState(null);
   const [lengthZ, setLengthZ] = useState(null);
   const [lengthTop, setLengthTop] = useState(null);
   const [lengthBottom, setLengthBottom] = useState(null);
   
   const [toggle, setToggle] = useState(false);
+  const [audioState, setAudioState] = useState(30);
+  // const color = "url(#gradient) var(--sub-bg-color)";
   
 
   const animatedYStyle = useSpring({
     strokeDasharray: lengthY,
-    strokeDashoffset: toggle ? 0 : lengthY,
+    strokeDashoffset: lengthY,
     strokeWidth: 2,
   });
   const animatedZStyle = useSpring({
     strokeDasharray: lengthZ,
-    strokeDashoffset: toggle ? 0 : lengthZ,
+    strokeDashoffset: lengthZ,
     strokeWidth: 2,
   });
   const animatedTopStyle = useSpring({
     strokeDasharray: lengthTop,
-    strokeDashoffset: toggle ? 0 : lengthTop,
+    strokeDashoffset: lengthTop,
     strokeWidth: 2,
   });
   const animatedBottomStyle = useSpring({
     strokeDasharray: lengthBottom,
-    strokeDashoffset: toggle ? 0 : lengthBottom,
+    strokeDashoffset: lengthBottom,
     strokeWidth: 2,
-    delay: 200
+    // delay: 200
   });
 
 
 
 
-  const animatedYZFillStyle = useSpring({
+  const animatedFillStyle = useSpring({
+    // we do *not* animating this property, we just set it up
     fill: "url(#gradient) var(--sub-bg-color)",
-    opacity: lengthY > 0 ? 1 : 0,
+    opacity: 1,
     strokeDasharray: 0,
     strokeDashoffset: 0,
-    strokeWidth: 0,
-    delay: 1500,
+    strokeWidth: 2,
+    // delay: 3000,
     // mass: 200,
   });
   const animatedRingFillStyle = useSpring({
     // we do *not* animating this property, we just set it up
     fill: "url(#gradient2) var(--sub-bg-color)",
-    opacity: lengthY > 0 ? 1 : 0,
     strokeDasharray: 0,
     strokeDashoffset: 0,
-    strokeWidth: 0,
-    delay: 1500,
+    strokeWidth: 2,
+    // delay: 3000,
     // mass: 200,
   });
   
 
 
+  useEffect(() => {
 
+    if (((audio.reduce((a, b) => a + b, 0)/audio.length)/2.55) !== audioState && typeof (audio.reduce((a, b) => a + b, 0)/audio.length) === 'number') {
+      setAudioState(((audio.reduce((a, b) => a + b, 0)/audio.length)/2.55 - 50)*30 + 60)
+    }
+    
+  }, [(audio.reduce((a, b) => a + b, 0)/audio.length)]);
 
   useEffect(() => {
     // console.log(toggle, lengthY);
@@ -160,16 +168,16 @@ export const YZelements = ({toggleB = false, audio}) => {
       <defs>
         <clipPath id="clipId0">
           <path d="M0,600 800,600 800,0 0,0 z" />
-        </clipPath>        
+        </clipPath>
         <linearGradient id="gradient" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--color-bot)" />
-          <stop offset={"40%"} stopColor="var(--color-stop)" />
-          <stop offset={"60%"} stopColor="var(--color-stop)" />
+          <stop offset="0%" stopColor="var(--color-stop)" />
+          <stop offset={`${parseInt(audioState)}%`} stopColor="var(--color-stop)" />
           <stop offset="100%" stopColor="var(--color-bot)" />
         </linearGradient>
         <linearGradient id="gradient2" x2="1" y2="0">
           <stop offset="0%" stopColor="var(--color-bot)" />
-          <stop offset={"50%"} stopColor="var(--color-stop)" />
+          <stop offset={`${50 - parseInt(audioState)}%`} stopColor="var(--color-stop)" />
+          <stop offset={`${50 + parseInt(audioState)}%`} stopColor="var(--color-stop)" />
           <stop offset="100%" stopColor="var(--color-bot)" />
         </linearGradient>
       </defs>
@@ -191,7 +199,7 @@ export const YZelements = ({toggleB = false, audio}) => {
           }}
         />
         <YA
-          animatedStyle={animatedYZFillStyle}
+          animatedStyle={animatedFillStyle}
           iref={(ref) => {
             if (ref) {
               // setLengthY(ref.getTotalLength());
@@ -242,7 +250,7 @@ export const YZelements = ({toggleB = false, audio}) => {
           }}
         />
         <ZA
-          animatedStyle={animatedYZFillStyle}
+          animatedStyle={animatedFillStyle}
           iref={(ref) => {
             if (ref) {
               setLengthY(ref.getTotalLength());

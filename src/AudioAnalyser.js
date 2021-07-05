@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AudioVisualiser from './AudioVisualiser';
 import AudioSpectrum from 'react-audio-spectrum';
-import { YZelements } from './YZelements';
+import { YZelementsAudio } from './YZelementsAudio';
 
 class AudioAnalyser extends Component {
   constructor(props) {
@@ -54,9 +54,10 @@ class AudioAnalyser extends Component {
         gap={4}
       />
        <div className="content">
-      <YZelements audio={this.state.audioData} toggleB={true} />
+      <YZelementsAudio audio={this.state.audioData} toggleB={true} />
       </div>
     </div>
+    
     )
   }
 }

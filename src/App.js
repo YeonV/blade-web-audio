@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AudioAnalyser from './AudioAnalyser';
-// import { YZelements } from './YZelements';
+import { YZelements } from './YZelements';
 
 class App extends Component {
   constructor(props) {
@@ -43,7 +43,10 @@ class App extends Component {
         {this.state.audio ? <AudioAnalyser audio={this.state.audio} /> : <div />}
         {/* {this.state.audio ? <AudioAnalyser audio={this.state.audio} /> : <div style={{ height: '340px' }} />} */}
         <div className="content">
-          {/* <YZelements toggleB={this.state.audio ? true : false} audio={this.state.audio} /> */}
+        
+        {!this.state.audio && <YZelements toggleB={this.state.audio ? true : false}  />}
+          
+        
           {/* {this.state.audio ? <YZelements toggleB={this.state.audio ? true : false} audio={this.state.audio} /> : <div style={{ height: '340px' }} />} */}
         </div>
       </div>
